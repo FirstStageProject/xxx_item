@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<!-- ====================基本信息==================== -->
+	
+	<display-name>First Project</display-name>
+	
+	<!-- ===================上下文参数=================== -->
+	
+	<!-- Spring配置文件位置 -->
+	<context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>classpath:spring.xml,classpath:spring-hibernate.xml</param-value>
+	</context-param>
+
+	<!-- =====================过滤器===================== -->
+	
+	<filter><!-- 字符编码过滤器 -->
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- Spring的OpenSessionInView实现 -->
+	<filter>
+	    <filter-name>openSessionInViewFilter</filter-name>
+	    <filter-class>
+	        org.springframework.orm.hibernate4.support.OpenSessionInViewFilter
+	    </filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>openSessionInViewFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- =====================监听器===================== -->
+	
+	<!-- 定义一个request全局函数 -->
+	<listener>
+	        <listener-class>
+	            org.springframework.web.context.request.RequestContextListener
+	        </listener-class>
+	</listener>
+	
+	<!-- 默认的spring配置文件是在WEB-INF下的applicationContext.xml -->
+	<listener>
+		    <description>spring</description>
+		    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- ==================Servlet设置================== -->
+
+	<!-- 静态资源映射到默认Servlet -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/lib/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/images/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/css/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/js/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 动态资源映射到Spring -->
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<!-- 这里可以用 / 但不能用 /* ，拦截了所有请求会导致静态资源无法访问-->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 默认文件列表 -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>main.jsp</welcome-file>
+		<welcome-file>main.htm</welcome-file>
+		<welcome-file>main.html</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 出错页面定义
+	<error-page>  
+	    <exception-type>java.lang.Throwable</exception-type>  
+	    <location>/500.jsp</location>  
+	</error-page>
+	<error-page>
+	    <error-code>500</error-code>  
+	    <location>/500.jsp</location>  
+	</error-page> 
+	<error-page>
+	    <error-code>404</error-code>  
+	    <location>/404.jsp</location>  
+	</error-page>
+	 -->
+	 
+</web-app> 
